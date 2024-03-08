@@ -30,12 +30,12 @@
       esriConfig.apiKey = "AAPKd6409672b0d5440e9c2e2d8b15443310KcIz-5ZnlzNjqz6TdkOcBBW8UlY3ZzUhW1ntcu1PcW-m1KkOPsmMqvzu3Em86728";
 
       const popupTemplate = new PopupTemplate({
-        title: "<b>{name}</b>",
+        title: "{name}",
         content: [{
           type: "fields",
           fieldInfos: [
-            {fieldName: "city", label: <b>"City"</b>},
-            {fieldName: "tel", label:<b> "Phone"</b>}
+            {fieldName: "city", label:"City"},
+            {fieldName: "tel", label:"Phone"}
           ]
         }]
       });
