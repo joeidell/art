@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Art Galleries in New York City</title>
+  <style>
+    html, body, #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+  <link rel="stylesheet" href="https://js.arcgis.com/4.28/esri/themes/light/main.css">
+</head>
+<body>
+  <div id="viewDiv"></div>
+
+  <script src="https://js.arcgis.com/4.28/"></script>
+  <script>
+    require([
+      "esri/config",
+      "esri/Map",
+      "esri/views/MapView",
+      "esri/layers/FeatureLayer",
+      "esri/PopupTemplate"
+    ], function(esriConfig, Map, MapView, FeatureLayer, PopupTemplate) {
+
+      esriConfig.apiKey = "AAPKd6409672b0d5440e9c2e2d8b15443310KcIz-5ZnlzNjqz6TdkOcBBW8UlY3ZzUhW1ntcu1PcW-m1KkOPsmMqvzu3Em86728";
+
+      const popupTemplate = new PopupTemplate({
+        title: "{name}",
+        content: [{
+          type: "fields",
+          fieldInfos: [
+            {fieldName: "city", label: "City"},
+            {fieldName: "tel", label: "Phone"}
+          ]
+        }]
+      });
+
+      const map = new Map({
+        basemap: "streets-vector"
+      });
+
+      const view = new MapView({
+        container: "viewDiv",
+        map: map,
+        center: [-74.0060, 40.7128],
+        zoom: 13
+      });
+
+      const artGalleries = new FeatureLayer({
+        url: "https://services.arcgis.com/V6ZHFr6zdgNZuVG0/ArcGIS/rest/services/Art_Galleries_NewYork/FeatureServer"
+      });
+
+      artGalleries.popupTemplate = popupTemplate;
+
+      // Listen for layer load errors
+      artGalleries.on("error", function(error) {
+        console.error("Feature layer failed to load:", error);
+      });
+
+      map.add(artGalleries);
+
+      // Listen for map load errors
+      map.on("error", function(error) {
+        console.error("Map failed to load:", error);
+      });
+
+    });
+  </script>
+</body>
+</html>
